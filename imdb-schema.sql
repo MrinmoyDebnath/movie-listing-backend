@@ -22,3 +22,10 @@ CREATE TABLE producer (
   dob DATE NOT NULL,
   bio TEXT,
 );
+
+CREATE TABLE users (
+  id uuid PRIMARY KEY NOT NULL,
+  username VARCHAR NOT NULL,
+  email VARCHAR NOT NULL,
+  password VARCHAR NOT NULL
+);
