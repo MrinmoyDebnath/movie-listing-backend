@@ -1,4 +1,5 @@
 const express = require('express');
+const auth = require('../auth');
 const Producers = require('../models/producers');
 
 const producers = express.Router()
@@ -11,6 +12,7 @@ producers.get('/', async (req, res) => {
         res.json(result)
     }catch(err){
         console.error(err)
+        res.status(400).send(err)
     }
 })
 producers.get('/:name', async (req, res)=>{
@@ -19,30 +21,34 @@ producers.get('/:name', async (req, res)=>{
         res.json(result)
     }catch(err){
         console.error(err)
+        res.status(400).send(err)
     }
 })
-producers.post('/', async (req, res)=>{
+producers.post('/', auth, async (req, res)=>{
     try{
         const result = await Producers.create(req.body);
         res.json(result)
     }catch(err){
         console.error(err)
+        res.status(400).send(err)
     }
 })
-producers.delete('/:id', async (req, res)=>{
+producers.delete('/:id', auth, async (req, res)=>{
     try{
         const result = await Producers.removeProducer(req.params.id);
         res.json(result);
     }catch(err){
         console.error(err)
+        res.status(400).send(err)
     }
 })
-producers.put('/', async (req, res)=>{
+producers.put('/', auth, async (req, res)=>{
     try{
         const result = await Producers.updateProducer(req.body);
         res.json(result)
     }catch(err){
         console.error(err)
+        res.status(400).send(err)
     }
 })
 module.exports = producers;

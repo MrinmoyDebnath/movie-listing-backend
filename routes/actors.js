@@ -1,5 +1,6 @@
 const express = require('express')
 const Actors = require('../models/actors');
+const auth = require('../auth');
 
 const actors = express.Router()
 actors.get('/', async (req, res) => {
@@ -13,6 +14,7 @@ actors.get('/', async (req, res) => {
         res.json(actors)
     }catch(err){
         console.error(err)
+        res.status(400).send(err)
     }
 })
 actors.get('/:name', async (req, res)=>{
@@ -22,30 +24,35 @@ actors.get('/:name', async (req, res)=>{
         res.json(result)
     }catch(err){
         console.error(err)
+        res.status(400).send(err)
     }
 })
-actors.post('/', async (req, res)=>{
+actors.post('/', auth, async (req, res)=>{
+    console.log('body: ', req.body)
     try{
         const result = await Actors.create(req.body);
         res.json(result)
     }catch(err){
         console.error(err)
+        res.status(400).send(err)
     }
 })
-actors.delete('/:id', async (req, res)=>{
+actors.delete('/:id', auth,  async (req, res)=>{
     try{
         const result = await Actors.removeActor(req.params.id);
         res.json(result);
     }catch(err){
         console.error(err)
+        res.status(400).send(err)
     }
 })
-actors.put('/', async (req, res)=>{
+actors.put('/', auth, async (req, res)=>{
     try{
         const result = await Actors.updateActor(req.body);
         res.json(result)
     }catch(err){
         console.error(err)
+        res.status(400).send(err)
     }
 })
 module.exports = actors;

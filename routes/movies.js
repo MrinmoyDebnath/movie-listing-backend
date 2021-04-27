@@ -1,4 +1,5 @@
-const express = require('express')
+const express = require('express');
+const auth = require('../auth');
 const Movies = require('../models/movies')
 
 const movies = express.Router()
@@ -11,6 +12,7 @@ movies.get('/', async (req, res) => {
         res.json(result)
     }catch(err){
         console.error(err)
+        res.status(400).send(err)
     }
 })
 movies.get('/:name', async (req, res)=>{
@@ -19,6 +21,7 @@ movies.get('/:name', async (req, res)=>{
         res.json(result)
     }catch(err){
         console.error(err)
+        res.status(400).send(err)
     }
 })
 movies.get('/actor/:name', async (req, res)=>{
@@ -27,6 +30,7 @@ movies.get('/actor/:name', async (req, res)=>{
         res.json(result)
     }catch(err){
         console.error(err)
+        res.status(400).send(err)
     }
 })
 movies.get('/producer/:name', async (req, res)=>{
@@ -35,31 +39,37 @@ movies.get('/producer/:name', async (req, res)=>{
         res.json(result)
     }catch(err){
         console.error(err)
+        res.status(400).send(err)
+        res.status(400).send(err)
     }
 })
-movies.post('/', async (req, res)=>{
+movies.post('/', auth, async (req, res)=>{
     try{
         const result = await Movies.create(req.body);
         res.json(result)
     }catch(err){
         console.error(err)
+        res.status(400).send(err)
+        res.status(400).send(err)
     }
 })
-movies.delete('/:id', async (req, res)=>{
+movies.delete('/:id', auth, async (req, res)=>{
     try{
         const result = await Movies.removeMovie(req.params.id);
         res.json(result);
     }catch(err){
         console.error(err)
+        res.status(400).send(err)
     }
 })
-movies.put('/', async (req, res)=>{
+movies.put('/', auth, async (req, res)=>{
     try{
         console.log(req.body)
         const result = await Movies.updateMovies(req.body);
         res.json(result)
     }catch(err){
         console.error(err)
+        res.status(400).send(err)
     }
 })
 module.exports = movies;
