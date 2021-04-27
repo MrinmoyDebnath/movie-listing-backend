@@ -36,7 +36,6 @@ movies.get('/producer/:name', async (req, res)=>{
         res.json(result)
     }catch(err){
         res.status(400).send(err)
-        res.status(400).send(err)
     }
 })
 movies.post('/', auth, async (req, res)=>{
@@ -44,7 +43,6 @@ movies.post('/', auth, async (req, res)=>{
         const result = await Movies.create(req.body);
         res.json(result)
     }catch(err){
-        res.status(400).send(err)
         res.status(400).send(err)
     }
 })
