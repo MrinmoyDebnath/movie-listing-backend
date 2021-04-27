@@ -7,7 +7,6 @@ module.exports = function(req, res, next) {
     try {
         const authHeader = req.headers['authorization'];
         const token = authHeader && authHeader.split(' ')[1];
-        console.log(authHeader)
         if(!token){
             return res.sendStatus(401);
         }
@@ -15,11 +14,9 @@ module.exports = function(req, res, next) {
             if(err){
                 return res.sendStatus(403);
             }
-            console.log("user: ",user);
             next();
         });
     } catch (error) {
-        console.error(error)
         res.status(400).json({message: "access denied"});
     }
 }

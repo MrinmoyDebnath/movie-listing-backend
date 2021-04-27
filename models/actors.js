@@ -22,7 +22,6 @@ async function create(data) {
         res.results = result.rows[0];
         return res;
     } catch(err){
-        console.error(err)
         throw err
     }
 }
@@ -37,7 +36,6 @@ async function getActor(name) {
         res.results = result.rows;
         return res;
     }catch(err){
-        console.error(err)
         throw err
     }
 }
@@ -62,7 +60,6 @@ async function allActors(offset, limit) {
         }
         return res;
     }catch(err){
-        console.error(err)
         throw err
     }
 }
@@ -114,7 +111,6 @@ async function updateActor(data) {
         res.results = actor;
         return res;
     } catch(err){
-        console.error(err)
         throw err
     }
 }
@@ -129,7 +125,6 @@ async function removeActor(id) {
         res.results = result.rows[0];
         return res;
     }catch(err){
-        console.error(err)
         throw err
     }
 }

@@ -11,7 +11,6 @@ movies.get('/', async (req, res) => {
         const result = await Movies.allMovies(offset, limit)
         res.json(result)
     }catch(err){
-        console.error(err)
         res.status(400).send(err)
     }
 })
@@ -20,7 +19,6 @@ movies.get('/:name', async (req, res)=>{
         const result = await Movies.getMovieFromName(req.params.name);
         res.json(result)
     }catch(err){
-        console.error(err)
         res.status(400).send(err)
     }
 })
@@ -29,7 +27,6 @@ movies.get('/actor/:name', async (req, res)=>{
         const result = await Movies.getMovieOfActor(req.params.name);
         res.json(result)
     }catch(err){
-        console.error(err)
         res.status(400).send(err)
     }
 })
@@ -38,7 +35,6 @@ movies.get('/producer/:name', async (req, res)=>{
         const result = await Movies.getMovieOfProducer(req.params.name);
         res.json(result)
     }catch(err){
-        console.error(err)
         res.status(400).send(err)
         res.status(400).send(err)
     }
@@ -48,7 +44,6 @@ movies.post('/', auth, async (req, res)=>{
         const result = await Movies.create(req.body);
         res.json(result)
     }catch(err){
-        console.error(err)
         res.status(400).send(err)
         res.status(400).send(err)
     }
@@ -58,17 +53,14 @@ movies.delete('/:id', auth, async (req, res)=>{
         const result = await Movies.removeMovie(req.params.id);
         res.json(result);
     }catch(err){
-        console.error(err)
         res.status(400).send(err)
     }
 })
 movies.put('/', auth, async (req, res)=>{
     try{
-        console.log(req.body)
         const result = await Movies.updateMovies(req.body);
         res.json(result)
     }catch(err){
-        console.error(err)
         res.status(400).send(err)
     }
 })

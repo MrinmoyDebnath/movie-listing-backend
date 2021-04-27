@@ -24,7 +24,6 @@ async function create(movie) {
         res.results = result.rows[0];
         return res;
     }catch(err){
-        console.error(err)
         throw err
     }
 }
@@ -48,7 +47,6 @@ async function allMovies(offset, limit) {
         res.results = result.rows;
         return res;
     }catch(err){
-        console.error(err)
         throw err
     }
 }
@@ -62,7 +60,6 @@ async function getMovieFromName(name) {
         res.results = result.rows;
         return res;
     }catch(err){
-        console.error(err)
         throw err
     }
 }
@@ -86,7 +83,6 @@ async function getMovieOfActor(name, offset, limit) {
         res.results = result.rows;
         return res;
     }catch(err){
-        console.error(err)
         throw err
     }
 }
@@ -110,14 +106,12 @@ async function getMovieOfProducer(name, offset, limit) {
         res.results = result.rows;
         return res;
     }catch(err){
-        console.error(err)
         throw err
     }
 }
 async function updateMovies(data) {
     try{
         let movie = []
-        console.log(data.name)
         if(data.name){
             const result = await db.query(
                 `UPDATE movies SET name = $1 where id = $2 RETURNING *;`,
@@ -172,7 +166,6 @@ async function updateMovies(data) {
         res.results = movie;
         return res;
     }catch(err){
-        console.error(err)
         throw err
     }
 }
@@ -186,7 +179,6 @@ async function removeMovie(id) {
         res.results = result.rows;
         return res;
     }catch(err){
-        console.error(err)
         throw err
     }
 }

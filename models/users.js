@@ -20,7 +20,6 @@ async function create(data) {
         res.results = result.rows[0];
         return res;
     }catch(err){
-        console.error(err)
         throw err
     }
 }
@@ -39,7 +38,6 @@ async function getUser(data){
         res.results = result.rows[0];
         return res;
     }catch(err){
-        console.error(err);
         throw err;
     }
 }

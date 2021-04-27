@@ -22,7 +22,6 @@ async function create(data) {
         res.results = result.rows[0];
         return res;
     }catch(err){
-        console.error(err)
         throw err
     }
 }
@@ -47,7 +46,6 @@ async function allProducers(offset, limit) {
         res.results = result.rows;
         return res;
     }catch(err){
-        console.error(err)
         throw err
     }
 }
@@ -61,7 +59,6 @@ async function getProducer(name) {
         res.results = result.rows;
         return res;
     }catch(err){
-        console.error(err)
         throw err
     }
 }
@@ -112,7 +109,6 @@ async function updateProducer(data) {
         res.results = producer;
         return res;
     }catch(err){
-        console.error(err)
         throw err
     }
 }
@@ -126,7 +122,6 @@ async function removeProducer(id) {
         res.results = result.rows;
         return res;
     }catch(err){
-        console.error(err)
         throw err
     }
 }
