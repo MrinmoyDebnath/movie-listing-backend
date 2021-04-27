@@ -1,5 +1,5 @@
 DROP DATABASE imdb;
 CREATE DATABASE imdb;
-\connect jobly
+\c imdb
 
 \i imdb-schema.sql
