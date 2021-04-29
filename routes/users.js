@@ -1,24 +1,27 @@
 const express = require('express')
 const Users = require('../models/users');
 const jwt = require('jsonwebtoken');
-const { SECRET_KEY } = require('../config');
 const bcrypt = require('bcrypt');
+const atob = require('atob');
+
+const SECRET_KEY = process.env.SECRET_KEY;
 
 const users = express.Router()
 
 users.post('/signup', async (req, res)=>{
     try{
         if(req.body.username && req.body.email && req.body.password){
-            const secretSalt = await bcrypt.genSalt();
-            const hashedPassword = await bcrypt.hash(req.body.password, secretSalt);
+            const saltRounds = 12;
+            const secretSalt = await bcrypt.genSalt(saltRounds);
+            const hashedPassword = await bcrypt.hash(atob(req.body.password), secretSalt);
             const data = {...req.body, password: hashedPassword};
             const result = await Users.create(data);
-            res.status(200).json(result)
+            return res.status(200).json(result)
         }else{
-            res.status(400).send('missing fields')
+            return res.status(400).send('missing fields')
         }
     }catch(err){
-        res.status(400).send(err)
+        return res.status(400).send('Something went wrong')
     }
 })
 users.post('/login', async (req, res)=>{
@@ -26,26 +29,26 @@ users.post('/login', async (req, res)=>{
         if(req.body.username && req.body.password){
             const user = await Users.getUser(req.body);
             if(user.results){
-                const correctPassword = await bcrypt.compare(req.body.password, user.results.password)
+                const correctPassword = await bcrypt.compare(atob(req.body.password), user.results.password)
                 if(correctPassword){
                     jwt.sign(req.body, SECRET_KEY, async (err, token)=>{
                         if(err){
-                            res.status(404).send(err);
+                            return res.status(400).send('Wrong Password');
                         }else{
-                            res.status(200).json({...user.results, token})
+                            return res.status(200).json({...user.results, token})
                         }
                     })
                 }else{
-                    res.status(400).send('Wrong password');
+                    return res.status(400).send('Wrong password');
                 }
             }else{
-                res.status(400).send('No such user');
+                return res.status(400).send('No such user');
             }
         }else{
-            res.status(400).send('Fill the fields');
+            return res.status(400).send('Fill the fields');
         }
     }catch(err){
-        res.status(400).send(err)
+        return res.status(400).send('Wrong request')
     }
 })
 module.exports = users;

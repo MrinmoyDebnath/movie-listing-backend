@@ -1,6 +1,5 @@
 const express = require('express')
 const Actors = require('../models/actors');
-const auth = require('../auth');
 
 const actors = express.Router()
 actors.get('/', async (req, res) => {
@@ -8,44 +7,42 @@ actors.get('/', async (req, res) => {
         const page = req.query.page || 1;
         const limit = req.query.limit || 10;
         const offset  = (page - 1) * limit;
-        // const endIndex = page * limit;
         const actors = await Actors.allActors(offset, limit);
-        // const result = actors.slice(startIndex, endIndex);
-        res.json(actors)
+        return res.json(actors)
     }catch(err){
-        res.status(400).send(err)
+        return res.status(400).send('Something went wrong')
     }
 })
 actors.get('/:name', async (req, res)=>{
     try{
         const result = await Actors.getActor(req.params.name);
-        res.json(result)
+        return res.json(result)
     }catch(err){
-        res.status(400).send(err)
+        return res.status(400).send('Something went wrong')
     }
 })
-actors.post('/', auth, async (req, res)=>{
+actors.post('/', async (req, res)=>{
     try{
         const result = await Actors.create(req.body);
-        res.json(result)
+        return res.json(result)
     }catch(err){
-        res.status(400).send(err)
+        return res.status(400).send('Something went wrong')
     }
 })
-actors.delete('/:id', auth,  async (req, res)=>{
+actors.delete('/:id',  async (req, res)=>{
     try{
         const result = await Actors.removeActor(req.params.id);
-        res.json(result);
+        return res.json(result);
     }catch(err){
-        res.status(400).send(err)
+        return res.status(400).send('Something went wrong')
     }
 })
-actors.put('/', auth, async (req, res)=>{
+actors.put('/', async (req, res)=>{
     try{
         const result = await Actors.updateActor(req.body);
-        res.json(result)
+        return res.json(result)
     }catch(err){
-        res.status(400).send(err)
+        return res.status(400).send('Something went wrong')
     }
 })
 module.exports = actors;
