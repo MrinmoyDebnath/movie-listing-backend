@@ -1,5 +1,6 @@
 const db = require('../db.js');
 const { v4: uuidv4 } = require('uuid');
+const atob = require('atob');
 
 async function create(data) {
     try{
@@ -13,10 +14,10 @@ async function create(data) {
                 RETURNING * ;`,
             [
                 uuidv4(),
-                data.name,
-                data.sex,
-                data.dob,
-                data.bio || null,
+                atob(data.name),
+                atob(data.sex),
+                atob(data.dob),
+                atob(data.bio) || null,
             ]);
         const res = {};
         res.results = result.rows[0];

@@ -1,5 +1,6 @@
 const db = require('../db.js');
 const { v4: uuidv4 } = require('uuid');
+const atob = require('atob');
 
 async function create(data) {
     try{
@@ -12,8 +13,8 @@ async function create(data) {
                 RETURNING * ;`,
             [
                 uuidv4(),
-                data.username,
-                data.email,
+                atob(data.username),
+                atob(data.email),
                 data.password
             ]);
         const res = {};
@@ -31,7 +32,7 @@ async function getUser(data){
              WHERE username = $1 ;
             `,
             [
-                data.username
+                atob(data.username)
             ]
         );
         const res = {};

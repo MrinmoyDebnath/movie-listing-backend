@@ -1,5 +1,6 @@
 const db = require('../db.js');
 const { v4: uuidv4 } = require('uuid');
+const atob = require('atob')
 
 async function create(movie) {
     try{
@@ -14,11 +15,11 @@ async function create(movie) {
                 RETURNING * ;`,
             [
                 uuidv4(),
-                movie.name,
-                movie.plot || null,
-                movie.poster || null,
-                movie.producer || null,
-                movie.actors || null
+                atob(movie.name),
+                atob(movie.plot) || null,
+                atob(movie.poster) || null,
+                atob(movie.producer) || null,
+                movie.actors.map(actor=>atob(actor)) || null
             ]);
         const res = {};
         res.results = result.rows[0];
