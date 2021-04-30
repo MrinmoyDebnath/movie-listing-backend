@@ -1,10 +1,8 @@
-const express = require('express')
-const Users = require('../models/users');
-const jwt = require('jsonwebtoken');
+const express = require('express');
 const bcrypt = require('bcrypt');
 const atob = require('atob');
-
-const SECRET_KEY = process.env.SECRET_KEY;
+const Users = require('../models/users');
+const { generateAccessToken, generateRefreshToken, tokenRefresh } = require('../auth');
 
 const users = express.Router()
 
@@ -24,6 +22,15 @@ users.post('/signup', async (req, res)=>{
         return res.status(400).send('Something went wrong')
     }
 })
+users.post('/refresh-token', async (req, res)=>{
+    try{
+        const refreshToken = req.body.token;
+        if (refreshToken === null) return res.sendStatus(401);
+        tokenRefresh(req.body, res);
+    }catch(err){
+        return res.status(400).send(err)
+    }
+})
 users.post('/login', async (req, res)=>{
     try{
         if(req.body.username && req.body.password){
@@ -31,15 +38,11 @@ users.post('/login', async (req, res)=>{
             if(user.results){
                 const correctPassword = await bcrypt.compare(atob(req.body.password), user.results.password)
                 if(correctPassword){
-                    jwt.sign(req.body, SECRET_KEY, async (err, token)=>{
-                        if(err){
-                            return res.status(400).send('Wrong Password');
-                        }else{
-                            return res.status(200).json({...user.results, token})
-                        }
-                    })
+                    const accessToken = generateAccessToken(req.body);
+                    const refreshToken = generateRefreshToken(req.body);
+                    return res.status(200).json({...user.results, 'token': accessToken, 'refreshToken': refreshToken})
                 }else{
-                    return res.status(400).send('Wrong password');
+                    return res.status(403).send('Wrong password');
                 }
             }else{
                 return res.status(400).send('No such user');
